@@ -2,6 +2,7 @@
     "BASE_DIR"  : "",
     "D_RIO_HOME" : "",
     "APP" : "",
+    "ARCH" : "",
 
     "FUZZ" : {
         "W_AFL_HOME" : ""
