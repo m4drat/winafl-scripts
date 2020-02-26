@@ -16,7 +16,7 @@ APP = 'CFF_Explorer_check_patched.exe'
 INP_DIR = BASE_DIR + 'testcases\\minset\\'
 MIN_DIR = BASE_DIR + 'testcases\\minimised\\'
 
-WORKERS = 1
+WORKERS = 8
 
 ARCH = '32' # can be 32 or 64
 
@@ -61,8 +61,8 @@ def tmin_runner(q : queue.Queue, worker_id : int):
         try:
             sp = subprocess.Popen(
                 cmdline,
-                # stdout=subprocess.PIPE, 
-                # stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE,
                 cwd=W_AFL_HOME + f'bin{ARCH}\\'
             )
             sp.wait()

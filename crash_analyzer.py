@@ -7,13 +7,6 @@ APP = 'CFF_Explorer_check_patched.exe'
 BUGID_DIR = 'C:\\Users\\madrat\\Desktop\\RE\\BugId\\'
 BASE_DIR  = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
 
-# C:\Users\madrat\Desktop\RE\BugId\BugId.cmd 
-# "--sReportFolderPath=\"BugId\"" --isa=x86 
-# C:\Users\madrat\Desktop\fuzz\CFF_Explorer_check_patched.exe 
-# -- C:\Users\madrat\Desktop\fuzz\fuzzers_results\crashes\id_000003_00_344
-
-# TODO: multithreading
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--crashes_dir', dest='inp',     help='fuzzers sync dir')
@@ -37,7 +30,6 @@ def main():
         cmdline = [
             BUGID_DIR + 'BugId.cmd',
             '--nApplicationMaxRunTimeInSeconds=6',
-            # '--sReportFolderPath="C:/Users/madrat/Desktop/fuzz/fuzzers_results/crash_analysis_results"',
             '--isa=x86',
             BASE_DIR + APP,
             '--',

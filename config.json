@@ -1,0 +1,33 @@
+{
+    "BASE_DIR"  : "",
+    "D_RIO_HOME" : "",
+    "APP" : "",
+
+    "FUZZ" : {
+        "W_AFL_HOME" : ""
+    },
+
+    "AFL_TMIN" : {
+
+    },
+    
+    "AFL_CMIN" : {
+
+    },
+    
+    "CRASH_ANALYZER" : {
+        "BUGID_DIR" : ""
+    },
+
+    "COLLECT" : {
+
+    },
+
+    "COVERAGE" : {
+
+    },
+
+    "RUN_TEST" : {
+        
+    }
+}
