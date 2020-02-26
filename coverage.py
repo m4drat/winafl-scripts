@@ -13,9 +13,9 @@ OUT_DIR = BASE_DIR + 'out\\'
 
 ARCH = '32' # can be 32 or 64
 
-def run_drrun(q : queue.Queue, worker_id : int):
+def run_drrun(tasks : queue.Queue, worker_id : int):
     while True:
-        params = q.get()
+        params = tasks.get()
 
         cmdline = [
             D_RIO_HOME + f'bin{ARCH}\\drrun.exe',
@@ -36,7 +36,7 @@ def run_drrun(q : queue.Queue, worker_id : int):
         )
         sp.wait()
 
-        q.task_done()
+        tasks.task_done()
 
 def main():
     parser = argparse.ArgumentParser()
