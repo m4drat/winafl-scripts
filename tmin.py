@@ -8,15 +8,15 @@ import sys
 
 TARGET = 0x24620 # 0x40C2D0 # 0x40C680
 
-D_RIO_HOME = 'Z:\\DynamoRIO-Windows-7.1.0-1\\'
-W_AFL_HOME = 'Z:\\winafl\\'
-BASE_DIR   = 'Z:\\fuzz\\'
-APP = 'CFF_Explorer_hash_calc_patched.exe'
+D_RIO_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\'
+W_AFL_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\winafl\\'
+BASE_DIR   = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
+APP = 'CFF_Explorer_check_patched.exe'
 
 INP_DIR = BASE_DIR + 'testcases\\minset\\'
 MIN_DIR = BASE_DIR + 'testcases\\minimised\\'
 
-WORKERS = 4
+WORKERS = 1
 
 ARCH = '32' # can be 32 or 64
 
@@ -28,7 +28,7 @@ def tmin_runner(q : queue.Queue, worker_id : int):
         inp_file = params['inp_file']
         out_file = params['out_file']
 
-        print(f'Worker: {worker_id} processing file: {inp_file}')
+        print(f'({worker_id}) Processing file: {inp_file}')
 
         cmdline = [
             W_AFL_HOME + f'bin{ARCH}\\afl-tmin.exe',
@@ -58,15 +58,24 @@ def tmin_runner(q : queue.Queue, worker_id : int):
             '@@'
         ]
 
-        sp = subprocess.Popen(
-            cmdline,
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE,
-            cwd=W_AFL_HOME + f'bin{ARCH}\\'
-        )
-        sp.wait()
-
-        q.task_done()
+        try:
+            sp = subprocess.Popen(
+                cmdline,
+                # stdout=subprocess.PIPE, 
+                # stderr=subprocess.PIPE,
+                cwd=W_AFL_HOME + f'bin{ARCH}\\'
+            )
+            sp.wait()
+            if sp.returncode != 0:
+                raise Exception()
+        except:
+            print(f'[-] ({worker_id}) Minimiser returned with non-null code!')
+        else:
+            print(f'[+] ({worker_id}) File {inp_file} is successfully minimised!')
+            q.task_done()
+        finally:
+            q.task_done()
+            q.put(params)
 
 def main():
     out_dir_path = Path(MIN_DIR)
@@ -77,7 +86,7 @@ def main():
     q = queue.Queue()
 
     for worker_id in range(WORKERS):
-        worker = threading.Thread(tmin_runner, args=(q, worker_id))
+        worker = threading.Thread(target=tmin_runner, args=(q, worker_id))
         worker.setDaemon(True)
         worker.start()
 

@@ -16,9 +16,9 @@ BASE_DIR  = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--crashes_dir', dest='inp',  help='fuzzers sync dir')
-    parser.add_argument('-o', '--out_dir',  dest='out',  help='output dir')
-    parser.add_argument('-d', '--delete',  dest='delete',  help='delte test cases, that didnt lead to crash', default=False)
+    parser.add_argument('-c', '--crashes_dir', dest='inp',     help='fuzzers sync dir')
+    parser.add_argument('-o', '--out_dir',     dest='out',     help='output dir')
+    parser.add_argument('-d', '--delete',      dest='delete',  help='delete test cases, that didnt lead to crash', default=False)
     args = parser.parse_args() 
 
     crashes_dir = pathlib.Path(args.inp)
