@@ -7,8 +7,9 @@
 
     "FUZZ" : {
         "INP_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset\\",
-        "OUT_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\out_t\\",
+        "OUT_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\out\\",
         "TIMEOUT" : "3000",
+        
         "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
         "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
         "TARGET_OFFSET"   : "0x24620",
@@ -16,6 +17,7 @@
         "CALL_CONVENTION" : "thiscall",
         "COVTYPE" : "edge",
         "FUZZ_ITER" : "5000",
+        
         "TARGET_CMD" : [
             "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
             "@@"
@@ -23,11 +25,41 @@
     },
 
     "AFL_TMIN" : {
-
+        "WORKERS" : 8,
+        "INP_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset\\",
+        "MIN_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minimised\\",
+        "TIMEOUT" : "15000",
+        
+        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
+        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
+        "TARGET_OFFSET"   : "0x24620",
+        "NARGS" : "1",
+        "CALL_CONVENTION" : "thiscall",
+        "COVTYPE" : "edge",
+        
+        "TARGET_CMD" : [
+            "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
+            "@@"
+        ],
+        "EXCLUDE" : []
     },
     
     "AFL_CMIN" : {
+        "INP_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\favourite",
+        "MIN_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset",
+        "TIMEOUT" : "100000",
 
+        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
+        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
+        "TARGET_OFFSET"   : "0x24620",
+        "NARGS" : "1",
+        "CALL_CONVENTION" : "thiscall",
+        "COVTYPE" : "edge",
+        
+        "TARGET_CMD" : [
+            "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
+            "@@"
+        ]
     },
     
     "CRASH_ANALYZER" : {

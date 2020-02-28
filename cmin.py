@@ -1,49 +1,54 @@
+from config_loader import load_config
+
 import subprocess
 import sys
 
-TARGET = 0x24620 # 0x40C2D0 # 0x40C680
-
-D_RIO_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\'
-W_AFL_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\winafl\\'
-BASE_DIR   = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
-APP = 'CFF_Explorer_check_patched.exe'
-
-def main():
+def run_cmin(args : dict):
     cmdline = [
         'py',
         '-2',
-        W_AFL_HOME + 'winafl-cmin.py',
+        args['W_AFL_HOME'] + 'winafl-cmin.py',
         '-D',
-        D_RIO_HOME + 'bin32',
+        args['D_RIO_HOME'] + f'bin{args["ARCH"]}\\',
         '-i',
-        BASE_DIR + 'testcases\\favourite',
+        args['AFL_CMIN']['INP_DIR'],
         '-o',
-        BASE_DIR + 'testcases\\minset',
+        args['AFL_CMIN']['MIN_DIR'],
         '-t',
-        '100000',
-        '-covtype',
-        'edge',
-        '-coverage_module',
-        APP,
+        args['AFL_CMIN']['TIMEOUT'],
         '-target_module',
-        APP,
+        args['AFL_CMIN']['TARGET_MODULE'],
+        '-coverage_module',
+        args['AFL_CMIN']['COVERAGE_MODULE'],
         '-target_offset',
-        hex(TARGET),
+        hex(int(args['AFL_CMIN']['TARGET_OFFSET'], 16)),
         '-nargs',
-        '1',
+        args['AFL_CMIN']['NARGS'],
         '-call_convention',
-        'thiscall',
+        args['AFL_CMIN']['CALL_CONVENTION'],
+        '-covtype',
+        args['AFL_CMIN']['COVTYPE'],
         '--',
-        BASE_DIR + APP,
-        '@@'
+        ' '.join(args['FUZZ']['TARGET_CMD'])
     ]
 
     print(' '.join(cmdline))
 
     subprocess.run(
         cmdline,
-        cwd=W_AFL_HOME + 'bin32'
+        cwd=args['W_AFL_HOME'] + f'bin{args["ARCH"]}'
     )
+
+def main():
+    if len(sys.argv) > 1:
+        args = load_config(sys.argv[1])
+
+        if args == None:
+            exit(1)
+
+        run_cmin(args)
+    else:
+        print(f'Usage: {sys.argv[0]} <config_file>')
 
 if __name__ == "__main__":
     main()

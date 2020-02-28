@@ -1,28 +1,14 @@
+from config_loader import load_config
 from pathlib import Path
 from typing import List
 
 import subprocess
 import threading
 import queue
+import json
 import sys
 
-TARGET = 0x24620 # 0x40C2D0 # 0x40C680
-
-D_RIO_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\'
-W_AFL_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\winafl\\'
-BASE_DIR   = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
-APP = 'CFF_Explorer_check_patched.exe'
-
-INP_DIR = BASE_DIR + 'testcases\\minset\\'
-MIN_DIR = BASE_DIR + 'testcases\\minimised\\'
-
-WORKERS = 8
-
-ARCH = '32' # can be 32 or 64
-
-EXCLUDE : List[str] = []
-
-def tmin_runner(q : queue.Queue, worker_id : int):
+def tmin_runner(q : queue.Queue, worker_id : int, args : dict):
     while True:
         params = q.get()
         inp_file = params['inp_file']
@@ -31,31 +17,30 @@ def tmin_runner(q : queue.Queue, worker_id : int):
         print(f'({worker_id}) Processing file: {inp_file}')
 
         cmdline = [
-            W_AFL_HOME + f'bin{ARCH}\\afl-tmin.exe',
+            args['W_AFL_HOME'] + f'bin{args["ARCH"]}\\afl-tmin.exe',
             '-D',
-            D_RIO_HOME + f'bin{ARCH}',
+            args['D_RIO_HOME'] + f'bin{args["ARCH"]}',
             '-i',
             inp_file,
             '-o',
             out_file,
             '-t',
-            '15000',
+            args['AFL_TMIN']['TIMEOUT'],
             '--',
             '-target_module',
-            APP,
-            '-target_offset',
-            hex(TARGET),
-            '-nargs',
-            '1',
-            '-call_convention',
-            'thiscall',
+            args['AFL_TMIN']['TARGET_MODULE'],
             '-coverage_module',
-            APP,
+            args['AFL_TMIN']['COVERAGE_MODULE'],
+            '-target_offset',
+            hex(int(args['AFL_TMIN']['TARGET_OFFSET'], 16)),
+            '-nargs',
+            args['AFL_TMIN']['NARGS'],
+            '-call_convention',
+            args['AFL_TMIN']['CALL_CONVENTION'],
             '-covtype',
-            'edge',
+            args['AFL_TMIN']['COVTYPE'],
             '--',
-            BASE_DIR + APP,
-            '@@'
+            ' '.join(args['FUZZ']['TARGET_CMD'])
         ]
 
         try:
@@ -63,7 +48,7 @@ def tmin_runner(q : queue.Queue, worker_id : int):
                 cmdline,
                 stdout=subprocess.PIPE, 
                 stderr=subprocess.PIPE,
-                cwd=W_AFL_HOME + f'bin{ARCH}\\'
+                cwd=args['W_AFL_HOME'] + f'bin{args["ARCH"]}\\'
             )
             sp.wait()
             if sp.returncode != 0:
@@ -78,23 +63,31 @@ def tmin_runner(q : queue.Queue, worker_id : int):
             q.put(params)
 
 def main():
-    out_dir_path = Path(MIN_DIR)
-    if not out_dir_path.exists():
-        print('Out dir doesnt exist. Creating new!')
-        out_dir_path.mkdir(parents=True, exist_ok=True)
+    if len(sys.argv) > 1:
+        args = load_config(sys.argv[1])
 
-    q = queue.Queue()
+        if args == None:
+            exit(1)
 
-    for worker_id in range(WORKERS):
-        worker = threading.Thread(target=tmin_runner, args=(q, worker_id))
-        worker.setDaemon(True)
-        worker.start()
+        out_dir_path = Path(args['AFL_TMIN']['MIN_DIR'])
+        if not out_dir_path.exists():
+            print('Out dir doesnt exist. Creating new!')
+            out_dir_path.mkdir(parents=True, exist_ok=True)
 
-    for f_path in Path(INP_DIR).iterdir():
-        if not f_path.name in EXCLUDE:
-            q.put({'inp_file': f_path.as_posix(), 'out_file': MIN_DIR + f_path.name})
+        q = queue.Queue()
 
-    q.join()
+        for worker_id in range(args['AFL_TMIN']['WORKERS']):
+            worker = threading.Thread(target=tmin_runner, args=(q, worker_id, args))
+            worker.setDaemon(True)
+            worker.start()
+
+        for f_path in Path(args['AFL_TMIN']['INP_DIR']).iterdir():
+            if not f_path.name in args['AFL_TMIN']['EXCLUDE']:
+                q.put({'inp_file': f_path.as_posix(), 'out_file': args['AFL_TMIN']['MIN_DIR'] + f_path.name})
+
+        q.join()
+    else:
+        print(f'Usage: {sys.argv[0]} <config_file>')
 
 if __name__ == "__main__":
     main()

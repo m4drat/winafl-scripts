@@ -1,12 +1,10 @@
+from config_loader import load_config
+
 import subprocess
 import threading
 import time
 import json
 import sys
-
-def load_config(path):
-    cfg = open(path).read()
-    return json.loads(cfg)
 
 def spawn_fuzzer(worker : int, is_master : bool, args : dict):
     cmdline = [
@@ -62,7 +60,12 @@ def spawn_fuzzer(worker : int, is_master : bool, args : dict):
 def main():
     if len(sys.argv) > 2:
         worker = int(sys.argv[1])
-        threading.Timer(0.0, spawn_fuzzer, args=[worker, True if worker == 0 else False, load_config(sys.argv[2])]).start()
+        args = load_config(sys.argv[2])
+        
+        if args == None:
+            exit(1)
+
+        threading.Timer(0.0, spawn_fuzzer, args=[worker, True if worker == 0 else False, args]).start()
     else:
         print(f'Usage: {sys.argv[0]} <fuzzer_id> <config.json>')
 
