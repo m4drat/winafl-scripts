@@ -1,11 +1,25 @@
 {
-    "BASE_DIR"  : "",
-    "D_RIO_HOME" : "",
-    "APP" : "",
-    "ARCH" : "",
+    "BASE_DIR"  : "C:\\Users\\madrat\\Desktop\\fuzz\\",
+    "W_AFL_HOME" : "C:\\Users\\madrat\\Desktop\\RE\\winafl\\",
+    "D_RIO_HOME" : "C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\",
+    "APP" : "CFF_Explorer_check_patched.exe",
+    "ARCH" : "32",
 
     "FUZZ" : {
-        "W_AFL_HOME" : ""
+        "INP_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset\\",
+        "OUT_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\out_t\\",
+        "TIMEOUT" : "3000",
+        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
+        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
+        "TARGET_OFFSET"   : "0x24620",
+        "NARGS" : "1",
+        "CALL_CONVENTION" : "thiscall",
+        "COVTYPE" : "edge",
+        "FUZZ_ITER" : "5000",
+        "TARGET_CMD" : [
+            "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
+            "@@"
+        ]
     },
 
     "AFL_TMIN" : {
