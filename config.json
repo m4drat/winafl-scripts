@@ -1,5 +1,5 @@
 {
-    "BASE_DIR"  : "C:\\Users\\madrat\\Desktop\\fuzz\\",
+    "BASE_DIR"   : "C:\\Users\\madrat\\Desktop\\fuzz\\",
     "W_AFL_HOME" : "C:\\Users\\madrat\\Desktop\\RE\\winafl\\",
     "D_RIO_HOME" : "C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\",
     "APP" : "CFF_Explorer_check_patched.exe",
@@ -10,13 +10,15 @@
         "OUT_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\out\\",
         "TIMEOUT" : "3000",
         
-        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
-        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
-        "TARGET_OFFSET"   : "0x24620",
-        "NARGS" : "1",
-        "CALL_CONVENTION" : "thiscall",
-        "COVTYPE" : "edge",
-        "FUZZ_ITER" : "5000",
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "CFF_Explorer_check_patched.exe",
+            "-coverage_module", "CFF_Explorer_check_patched.exe",
+            "-target_offset",   "0x24620",
+            "-nargs",           "1",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge",
+            "fuzz_iterations",  "5000"
+        ],
         
         "TARGET_CMD" : [
             "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
@@ -30,12 +32,14 @@
         "MIN_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minimised\\",
         "TIMEOUT" : "15000",
         
-        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
-        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
-        "TARGET_OFFSET"   : "0x24620",
-        "NARGS" : "1",
-        "CALL_CONVENTION" : "thiscall",
-        "COVTYPE" : "edge",
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "CFF_Explorer_check_patched.exe",
+            "-coverage_module", "CFF_Explorer_check_patched.exe",
+            "-target_offset",   "0x24620",
+            "-nargs",           "1",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge"
+        ],
         
         "TARGET_CMD" : [
             "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
@@ -49,12 +53,14 @@
         "MIN_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset",
         "TIMEOUT" : "100000",
 
-        "TARGET_MODULE"   : "CFF_Explorer_check_patched.exe",
-        "COVERAGE_MODULE" : "CFF_Explorer_check_patched.exe",
-        "TARGET_OFFSET"   : "0x24620",
-        "NARGS" : "1",
-        "CALL_CONVENTION" : "thiscall",
-        "COVTYPE" : "edge",
+        "ADDITIONAL_CMD" : [
+            "-target_module",   "CFF_Explorer_check_patched.exe",
+            "-coverage_module", "CFF_Explorer_check_patched.exe",
+            "-target_offset",   "0x24620",
+            "-nargs",           "1",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge"
+        ],
         
         "TARGET_CMD" : [
             "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
@@ -63,7 +69,19 @@
     },
     
     "CRASH_ANALYZER" : {
-        "BUGID_DIR" : ""
+        "WORKERS"     : 8,
+        "BUGID_DIR"   : "C:\\Users\\madrat\\Desktop\\RE\\BugId\\",
+        "INP_DIR"     : "C:\\Users\\madrat\\Desktop\\fuzz\\fuzzers_results\\crashes\\",
+        "REPORTS_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\fuzzers_results\\crash_analysis_results\\",
+
+        "DELETE_NON_CRASHING" : false,
+
+        "ADDITIONAL_CMD" : [
+            "--nApplicationMaxRunTimeInSeconds=6",
+            "--isa=x86"
+        ],
+        
+        "TARGET_APP" : "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe"
     },
 
     "COLLECT" : {
