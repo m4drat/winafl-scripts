@@ -1,5 +1,5 @@
 additional features:
   ✔ multithreading @done(20-02-26 23:23)
   config file:
-    ☐ config file (save DR_DIR, AFL_DIR, ...)
-    ☐ separate command line for dynamorio
+    ✔ config file (save DR_DIR, AFL_DIR, ...) @done(20-02-29 11:49)
+    ✔ separate command line for dynamorio @done(20-02-29 11:49)
