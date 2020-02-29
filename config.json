@@ -85,14 +85,33 @@
     },
 
     "COLLECT" : {
-
+        "FUZZER_SYNC_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\out\\", 
+        "OUT_DIR"         : "C:\\Users\\madrat\\Desktop\\fuzz\\fuzzers_results\\",
+        "JUST_GET_STATS" : false,
+        "VERBOSITY" : false
     },
 
     "COVERAGE" : {
-
+        "WORKERS"    : 8,
+        "INP_DIR"    : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset\\",
+        "OUT_DIR"    : "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\minset_coverage\\",
+        "TARGET_APP" : "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe"
     },
 
     "RUN_TEST" : {
-        
+        "OUT_DIR" : "C:\\Users\\madrat\\Desktop\\fuzz\\",
+
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "CFF_Explorer_check_patched.exe",
+            "-coverage_module", "CFF_Explorer_check_patched.exe",
+            "-target_offset",   "0x24620",
+            "-nargs",           "1",
+            "-call_convention", "thiscall"
+        ],
+
+        "TARGET_CMD" : [
+            "C:\\Users\\madrat\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
+            "C:\\Users\\madrat\\Desktop\\fuzz\\testcases\\favourites\\x.dll"
+        ]
     }
 }

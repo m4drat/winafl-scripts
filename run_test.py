@@ -1,42 +1,19 @@
+from config_loader import load_config
+
 import subprocess
 import threading
 import time
 import sys
 
-TARGET = 0x24620 # 0x40C2D0 more_parsers
-
-D_RIO_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\'
-W_AFL_HOME = 'C:\\Users\\madrat\\Desktop\\RE\\winafl\\'
-BASE_DIR   = 'C:\\Users\\madrat\\Desktop\\fuzz\\'
-
-INP_DIR = BASE_DIR + 'testcases\\pe_small\\'
-
-# debug run:
-# Z:\DynamoRIO-Windows-7.1.0-1\bin32\drrun.exe -c Z:\winafl\bin32\winafl.dll -debug -coverage_module CFF_Explorer.exe -target_module CFF_Explorer.exe -target_offset 0x6df0 -nargs 3 -call_convention thiscall -- CFF_Explorer.exe Z:\fuzz\testcases\pe_small\tinydll.dll
-
-# WORKERS = 4
-
-ARCH = '32' # can be 32 or 64
-
-def run_dbg():
+def run_dbg(args):
     cmdline = [
-        D_RIO_HOME + f'bin{ARCH}\\drrun.exe',
+        args['D_RIO_HOME'] + f'bin{args["ARCH"]}\\drrun.exe',
         '-c',
-        W_AFL_HOME + f'bin{ARCH}\\winafl.dll',
+        args['W_AFL_HOME'] + f'bin{args["ARCH"]}\\winafl.dll',
         '-debug',
-        '-coverage_module',
-        'CFF_Explorer.exe',
-        '-target_module',
-        'CFF_Explorer.exe',
-        '-target_offset',
-        hex(TARGET),
-        '-nargs',
-        '0',
-        '-call_convention',
-        'thiscall',
+        ' '.join(args['RUN_TEST']['D_RIO_OPTIONS']),
         '--',
-        BASE_DIR + 'CFF_Explorer.exe',
-        INP_DIR + 'injector.exe'
+        ' '.join(args['RUN_TEST']['TARGET_CMD']),
     ]
 
     print('Cmdline: ' + ' '.join(cmdline))
@@ -45,12 +22,20 @@ def run_dbg():
         cmdline,
         # stdout=subprocess.PIPE, 
         # stderr=subprocess.PIPE,
-        cwd=BASE_DIR
+        cwd=args['RUN_TEST']['OUT_DIR']
     )
     sp.wait()
         
 def main():
-    run_dbg()
+    if len(sys.argv) > 1:
+        args = load_config(sys.argv[1])
+
+        if args == None:
+            exit(1)
+
+        run_dbg(args)
+    else:
+        print(f'Usage: {sys.argv[0]} <config_file>')
 
 if __name__ == "__main__":
     main()
