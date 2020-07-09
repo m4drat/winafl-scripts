@@ -27,16 +27,16 @@ def tmin_runner(q : queue.Queue, worker_id : int, args : dict):
             '-t',
             args['AFL_TMIN']['TIMEOUT'],
             '--',
-            ' '.join(args['AFL_TMIN']['D_RIO_OPTIONS']),
+            *args['AFL_TMIN']['D_RIO_OPTIONS'],
             '--',
-            ' '.join(args['FUZZ']['TARGET_CMD'])
+            *args['FUZZ']['TARGET_CMD']
         ]
 
         try:
             sp = subprocess.Popen(
                 cmdline,
-                stdout=subprocess.PIPE, 
-                stderr=subprocess.PIPE,
+                # stdout=subprocess.PIPE, 
+                # stderr=subprocess.PIPE,
                 cwd=args['W_AFL_HOME'] + f'bin{args["ARCH"]}\\'
             )
             sp.wait()

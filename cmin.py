@@ -16,9 +16,9 @@ def run_cmin(args : dict):
         args['AFL_CMIN']['MIN_DIR'],
         '-t',
         args['AFL_CMIN']['TIMEOUT'],
-        ' '.join(args['FUZZ']['ADDITIONAL_CMD']),
+        *args['FUZZ']['ADDITIONAL_CMD'],
         '--',
-        ' '.join(args['FUZZ']['TARGET_CMD'])
+        *args['FUZZ']['TARGET_CMD']
     ]
 
     print(' '.join(cmdline))

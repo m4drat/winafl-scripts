@@ -1,6 +1,7 @@
 import json
 
 def load_config(path):
+    args = None
     try:
         cfg = open(path).read()
         args = json.loads(cfg)

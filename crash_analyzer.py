@@ -20,7 +20,7 @@ def run_bugid(tasks : queue.Queue, worker_id : int, args : dict):
 
         cmdline = [
             args['CRASH_ANALYZER']['BUGID_DIR'] + 'BugId.cmd',
-            ' '.join(args['CRASH_ANALYZER']['ADDITIONAL_CMD']),
+            *args['CRASH_ANALYZER']['ADDITIONAL_CMD'],
             args['CRASH_ANALYZER']['TARGET_APP'],
             '--',
             crash_path

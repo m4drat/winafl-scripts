@@ -11,9 +11,9 @@ def run_dbg(args):
         '-c',
         args['W_AFL_HOME'] + f'bin{args["ARCH"]}\\winafl.dll',
         '-debug',
-        ' '.join(args['RUN_TEST']['D_RIO_OPTIONS']),
+        *args['RUN_TEST']['D_RIO_OPTIONS'],
         '--',
-        ' '.join(args['RUN_TEST']['TARGET_CMD']),
+        *args['RUN_TEST']['TARGET_CMD'],
     ]
 
     print('Cmdline: ' + ' '.join(cmdline))

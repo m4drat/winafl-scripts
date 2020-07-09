@@ -22,9 +22,9 @@ def spawn_fuzzer(worker : int, is_master : bool, args : dict):
         '-I',
         '15000+',
         '--',
-        ' '.join(args['FUZZ']['D_RIO_OPTIONS']),
+        *args['FUZZ']['D_RIO_OPTIONS'],
         '--',
-        ' '.join(args['FUZZ']['TARGET_CMD'])
+        *args['FUZZ']['TARGET_CMD']
     ]
 
     print('[+] Fuzzer commad-line: ' + ' '.join(cmdline))
