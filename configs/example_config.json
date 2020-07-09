@@ -1,0 +1,117 @@
+{
+    "BASE_DIR"   : "C:\\Users\\user\\Desktop\\fuzz\\",
+    "W_AFL_HOME" : "C:\\Users\\user\\Desktop\\RE\\winafl\\",
+    "D_RIO_HOME" : "C:\\Users\\user\\Desktop\\RE\\DynamoRIO-Windows-7.91.18278-0\\",
+    "APP" : "app.exe",
+    "ARCH" : "32",
+
+    "FUZZ" : {
+        "INP_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minset\\",
+        "OUT_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\out\\",
+        "TIMEOUT" : "5000+",
+        
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "app.exe",
+            "-coverage_module", "app.exe",
+            "-target_offset",   "0x1337",
+            "-nargs",           "5",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge",
+            "-fuzz_iterations", "5000"
+        ],
+        
+        "TARGET_CMD" : [
+            "C:\\Users\\user\\Desktop\\fuzz\\app.exe",
+            "@@"
+        ]
+    },
+
+    "AFL_TMIN" : {
+        "WORKERS" : 8,
+        "INP_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minset\\",
+        "MIN_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minimised\\",
+        "TIMEOUT" : "15000",
+        
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "app.exe",
+            "-coverage_module", "app.exe",
+            "-target_offset",   "0x1337",
+            "-nargs",           "3",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge"
+        ],
+        
+        "TARGET_CMD" : [
+            "C:\\Users\\user\\Desktop\\fuzz\\CFF_Explorer_check_patched.exe",
+            "@@"
+        ],
+        "EXCLUDE" : []
+    },
+    
+    "AFL_CMIN" : {
+        "INP_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\favourite",
+        "MIN_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minset",
+        "TIMEOUT" : "100000",
+
+        "ADDITIONAL_CMD" : [
+            "-target_module",   "app.exe",
+            "-coverage_module", "app.exe",
+            "-target_offset",   "0x1337",
+            "-nargs",           "3",
+            "-call_convention", "thiscall",
+            "-covtype",         "edge"
+        ],
+        
+        "TARGET_CMD" : [
+            "C:\\Users\\user\\Desktop\\fuzz\\app.exe",
+            "@@"
+        ]
+    },
+    
+    "CRASH_ANALYZER" : {
+        "WORKERS"     : 8,
+        "BUGID_DIR"   : "C:\\Users\\user\\Desktop\\RE\\BugId\\",
+        "INP_DIR"     : "C:\\Users\\user\\Desktop\\fuzz\\fuzzers_results_0x1337\\hangs\\",
+        "REPORTS_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\fuzzers_results_0x1337\\hangs_analysis_results\\",
+
+        "DELETE_NON_CRASHING" : false,
+
+        "ADDITIONAL_CMD" : [
+            "--nApplicationMaxRunTimeInSeconds=6",
+            "--isa=x86"
+        ],
+        
+        "TARGET_APP" : "C:\\Users\\user\\Desktop\\fuzz\\app.exe"
+    },
+
+    "COLLECT" : {
+        "FUZZER_SYNC_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\out\\", 
+        "OUT_DIR"         : "C:\\Users\\user\\Desktop\\fuzz\\fuzzers_results_0x1337\\",
+        "JUST_GET_STATS" : false,
+        "VERBOSITY" : false
+    },
+
+    "COVERAGE" : {
+        "WORKERS"    : 8,
+        "INP_DIR"    : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minset\\",
+        "OUT_DIR"    : "C:\\Users\\user\\Desktop\\fuzz\\testcases\\minset_coverage\\",
+        "TARGET_APP" : "C:\\Users\\user\\Desktop\\fuzz\\app.exe"
+    },
+
+    "RUN_TEST" : {
+        "OUT_DIR" : "C:\\Users\\user\\Desktop\\fuzz\\",
+
+        "D_RIO_OPTIONS" : [
+            "-target_module",   "app.exe",
+            "-coverage_module", "app.exe",
+            "-target_offset",   "0x1337",
+            "-nargs",           "3",
+            "-call_convention", "thiscall"
+        ],
+
+        "TARGET_CMD" : [
+            "C:\\Users\\user\\Desktop\\fuzz\\app.exe",
+            "C:\\Users\\user\\Desktop\\fuzz\\testcases\\favourite\\x.dll"
+        ]
+    }
+}
